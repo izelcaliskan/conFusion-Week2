@@ -13,8 +13,7 @@ export class AboutComponent implements OnInit {
   leaders?:Leader[];
 
   constructor(private leaderService: LeaderService) { 
-    leaderService.getLeaders()
-    .then(leaders => this.leaders = leaders);
+    leaderService.getLeaders().subscribe(leaders => this.leaders = leaders);
 
 
    }
