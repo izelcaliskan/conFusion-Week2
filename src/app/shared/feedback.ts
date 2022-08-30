@@ -2,10 +2,10 @@ export interface Feedback {
     firstname: string;
     lastname: string;
     telnum: number;
-    email:string;
+    email: string;
     agree: boolean;
-    contacttype:string;
+    contacttype: string;
     message: string;
 };
 
-export const ContactType = ["None","Tel","Email"];
+export const ContactType = ["None", "Tel", "Email"];

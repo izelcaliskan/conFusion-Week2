@@ -5,6 +5,7 @@ import { Promotion } from '../shared/promotion';
 import { PromotionService } from '../services/promotion.service';
 import { Leader } from '../shared/leader';
 import { LeaderService } from '../services/leader.service';
+import { Observable } from 'rxjs';
 
 
 
@@ -27,6 +28,9 @@ export class HomeComponent implements OnInit {
     this.dishService.getFeaturedDish().subscribe(dish => this.dish = dish);
     this.promotionService.getFeaturedPromotion().subscribe(promotion => this.promotion = promotion);
     this.leaderService.getFeaturedLeader().subscribe(leader => this.leader = leader);
+  
+  
+
   }
 
 }
