@@ -20,6 +20,7 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
   formErrors:any = {
     "firstname": "",
     "lastname": "",
