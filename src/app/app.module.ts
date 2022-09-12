@@ -18,6 +18,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSliderModule} from '@angular/material/slider';
 
+
 import { AppComponent } from './app.component';
 
 import 'hammerjs';
@@ -35,6 +36,7 @@ import { PromotionService } from './services/promotion.service';
 import { LeaderService } from './services/leader.service';
 
 import { HttpClientModule } from '@angular/common/http';
+import { baseURL } from './shared/baseurl';
 
 
 
@@ -73,7 +75,10 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     MatSliderModule,
   ],
-  providers: [DishService, PromotionService, LeaderService],
+  providers: [DishService, 
+    PromotionService, 
+    LeaderService,
+    {provide: 'BaseURL', useValue:baseURL}],
   bootstrap: [AppComponent],
   entryComponents: [
     LoginComponent
