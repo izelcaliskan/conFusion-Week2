@@ -38,6 +38,7 @@ import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 
 import { HttpClientModule } from '@angular/common/http';
 import { baseURL } from './shared/baseurl';
+import { HDirective } from './directives/highlight.directive';
 
 
 
@@ -53,7 +54,8 @@ import { baseURL } from './shared/baseurl';
     AboutComponent,
     HomeComponent,
     ContactComponent,
-    LoginComponent
+    LoginComponent,
+    HDirective
   ],
   imports: [
     BrowserModule,
