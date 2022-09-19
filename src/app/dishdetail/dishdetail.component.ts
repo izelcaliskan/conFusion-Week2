@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Inject} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { DishService } from "../services/dish.service";
 import { Params, ActivatedRoute } from '@angular/router';
@@ -15,12 +15,13 @@ import { Comment } from '../shared/comment';
 })
 export class DishdetailComponent implements OnInit {
 
-  dish?: Dish;
+  dish?: Dish | null ;
   dishIds?: string[];
   prev?: string | null;
   next?: string | null;
   commentForm?: FormGroup;
-  errMess? : string;
+  errMess?: string;
+  dishcopy?: Dish | null ;
 
   @ViewChild("fform") commentFormDirective: any;
 
@@ -29,15 +30,15 @@ export class DishdetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    @Inject ('BaseURL') public baseURL:string) {
+    @Inject('BaseURL') public baseURL: string) {
     this.createForm();
   }
 
   ngOnInit(): void {
     this.dishService.getDishIds().subscribe((dishIds) => this.dishIds = dishIds);
     this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
-       errmess => this.errMess = <any> errmess );
+      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },
+        errmess => this.errMess = <any>errmess);
 
   }
   setPrevNext(dishId: string): void {
@@ -85,17 +86,23 @@ export class DishdetailComponent implements OnInit {
 
   onSubmit(): void {
     let comment = this.commentForm?.value;
-    comment.date=new Date().toISOString();
-    this.dish!.comments.push(comment);
+    comment.date = new Date().toISOString();
 
+    this.dishcopy!.comments.push(comment);
+    this.dishService.putDish(this.dishcopy!).subscribe(() => {
+      this.commentFormDirective.resetForm();
 
+      this.commentForm?.reset({
+        author: "",
+        rating: 5,
+        comment: "",
+      });
+    }, errmess => {
+      this.dish = null; this.dishcopy = null; this.errMess = <any>errmess;
+    })
     console.log(this.commentForm);
-    this.commentFormDirective.resetForm();
-    this.commentForm?.reset({
-      author: "",
-      rating: 5,
-      comment: "",
-    });
+
+
 
   }
   formErrors: any = {
