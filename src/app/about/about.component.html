@@ -61,7 +61,7 @@
       </mat-card-title>
       <mat-card-content>
         <mat-list>
-          <mat-list-item *ngFor="let x of leaders">
+          <mat-list-item *ngFor="let x of leaders" [@expand]>
             <img matListAvatar src="{{x.image}}"> 
             <div matLine>{{x.name}} {{x.abbr}}</div>
             <div matLine>{{x.designation}} </div>
