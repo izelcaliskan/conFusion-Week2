@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from '../about/animations/app.animation';
+import { flyInOut,expand } from '../about/animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -12,7 +13,8 @@ import { flyInOut } from '../about/animations/app.animation';
     'style': 'display: block;',
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
@@ -22,7 +24,8 @@ export class ContactComponent implements OnInit {
   contactType?: string[] = ContactType;
   @ViewChild("fform") feedbackFormDirective: any;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private feedbackService: FeedbackService) {
     this.createForm();
   }
 
@@ -35,6 +38,7 @@ export class ContactComponent implements OnInit {
     "telnum": "",
     "email": ""
   };
+
   validationMessages: any = {
     'firstname': {
       'required': 'First Name is required.',
@@ -91,19 +95,31 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  isLoading: boolean = false;
 
   onSubmit(): void {
-    this.feedback = this.feedbackForm?.value;
-    console.log(this.feedback);
-    this.feedbackForm?.reset({
-      firstname: "",
-      lastname: "",
-      telnum: 0,
-      email: "",
-      agree: false,
-      contacttype: "None",
-      message: "",
+
+    this.isLoading = true;
+    this.feedbackService.submitFeedback(this.feedbackForm?.value!).subscribe((newFeedback) => {
+      setTimeout(() => {
+        this.isLoading = false;
+        this.feedbackForm?.reset({
+          firstname: "",
+          lastname: "",
+          telnum: 0,
+          email: "",
+          agree: false,
+          contacttype: "None",
+          message: "",
+        });
+        this.feedbackFormDirective.resetForm();
+
+        this.feedback = newFeedback;
+
+        console.log(newFeedback);
+
+      }, 5000);
+
     });
-    this.feedbackFormDirective.resetForm();
   }
 }
